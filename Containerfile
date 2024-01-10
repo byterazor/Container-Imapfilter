@@ -18,8 +18,20 @@ RUN mkdir -p /usr/local/share/imapfilter
 
 COPY --from=builder /src/imapfilter/src/imapfilter /usr/local/bin/
 COPY --from=builder /src/imapfilter/src/*.lua /usr/local/share/imapfilter/
+
+# ensure every user can run imapfilter
+RUN chmod a+x /usr/local/bin/imapfilter
+
 ADD scripts/entryPoint.sh /entryPoint.sh
 
 RUN chmod +x /entryPoint.sh
+
+# add a user for running imapfilter in the container
+RUN addgroup imapfilter && adduser -D -G imapfilter imapfilter
+# ensure a homedirectory for the user exists and has correct access rights
+RUN mkdir -p /home/imapfilter && chown imapfilter.imapfilter /home/imapfilter
+
+# run everything as the imapfilter user
+USER imapfilter
 
 ENTRYPOINT ["/sbin/tini", "--", "/entryPoint.sh"]

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-export IMAPFILTER_HOME=/imapfilter/
+export IMAPFILTER_HOME=/home/imapfilter/
 
 if [ ! -e ${IMAPFILTER_HOME}/config.lua ]; then
-    echo "please provide a config.lua from a configmap"
+    echo "please provide a config.lua from a configmap or bindmount to ${IMAPFILTER_HOME}/config.lua"
     exit 255
 fi
 
