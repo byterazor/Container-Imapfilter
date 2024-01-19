@@ -69,14 +69,36 @@ steps:
   - name: push
     image: quay.io/buildah/stable
     privileged: true
+    environment:
+      USERNAME:
+        from_secret: username
+      PASSWORD:
+        from_secret: password
     volumes:
     - name: fedhq-ca-crt
       path: /etc/ssl/certs2/
     commands:
       - scripts/setupEnvironment.sh
-      - buildah manifest create registry.cloud.federationhq.de/imapfilter:latest registry.cloud.federationhq.de/imapfilter:latest-arm64 registry.cloud.federationhq.de/imapfilter:latest-amd64
-      - buildah manifest push registry.cloud.federationhq.de/imapfilter:latest docker://registry.cloud.federationhq.de/imapfilter:latest 
-      - buildah manifest rm registry.cloud.federationhq.de/imapfilter:latest
+      - buildah manifest create imapfilter:latest registry.cloud.federationhq.de/imapfilter:latest-arm64 registry.cloud.federationhq.de/imapfilter:latest-amd64
+      - buildah manifest push --all imapfilter:latest docker://registry.cloud.federationhq.de/imapfilter:latest 
+      - buildah login -u $${USERNAME} -p $${PASSWORD} registry.hub.docker.com
+      - buildah manifest push --all imapfilter:latest docker://registry.hub.docker.com/byterazor/imapfilter:latest
+      - buildah manifest rm imapfilter:latest
 depends_on:
   - build-amd64
   - build-arm64
+
+
+---
+kind: secret
+name: username
+get:
+  path: docker
+  name: username
+
+---
+kind: secret
+name: password
+get:
+  path: docker
+  name: secret
