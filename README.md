@@ -1,49 +1,62 @@
+---
+lang: EN_US
+---
+
 # ImapFilter Container Image
+
+## Description
 
 This repository contains the Containerfile and associated scripts for a container image that runs [imapfilter](https://github.com/lefcha/imapfilter).
 
-The container is based on alpine linux to keep it small.
+The image is based on Alpine Linux and compiles the main branch of 
+imapfilter in a build image so that the bare imapfilter image is 
+as small as possible.
 
-## Author
+imapfilter is running in a loop waiting 500 seconds between each 
+run. 
 
-- Dominik Meyer <dmeyer@federationhq.de>
+## Security
+
+Imapfilter is running with a non-root userid to improve security.
+In kubernetes you can also enforce running the image with readonly 
+root directory.
+
+## Supported Architectures
+
+- amd64
+- arm64
+
+## Updates
+
+I am trying to update the image weekly as long as my private kubernetes cluster is available. So I do not promise anything and do **not** rely 
+your business on this image.
+
+## Prerequisities
+
+A container runtime like
+
+* docker 
+* podman
+* kubernetes
 
 
-## Prerequisites
+## Container Parameters
 
-- Buildah
+At the moment there are no parameters but there will be 
+some added in the future.
 
-## Usage
 
-### Building the Container Image
+## Volumes
 
-You can build the container image using the following command:
+You have to mount the imapfilter config file to /home/imapfilter/config.lua. This can be done by a bind mount or a configmap in kubernetes.
 
-\```bash
-buildah bud -t imapfilter:latest .
-\```
+## Source Repository
 
-### Running the Container
+* https://gitea.federationhq.de/Container/imapfilter.git
 
-You can create and run a container from this image with the following command:
+## Authors
 
-\```bash
-podman run -d --name imapfilter imapfilter:latest
-\```
-
-### Pushing the Container Image to a Registry
-
-With Buildah:
-
-\```bash
-buildah push imapfilter:latest docker://<registry>/<username>/imapfilter:latest
-\```
-
-Replace `<registry>` with the name of your Docker registry and `<username>` with your username on that registry.
-
-## Configuration
-
-T.b.d.
+* **Dominik Meyer** - *Initial work* 
 
 ## License
 
