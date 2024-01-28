@@ -54,6 +54,10 @@ You have to mount the imapfilter config file to /home/imapfilter/config.lua. Thi
 
 * https://gitea.federationhq.de/Container/imapfilter.git
 
+## Prebuild Images
+
+* https://hub.docker.com/repository/docker/byterazor/imapfilter/general
+
 ## Authors
 
 * **Dominik Meyer** - *Initial work* 
