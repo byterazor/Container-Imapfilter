@@ -31,7 +31,8 @@ RUN addgroup imapfilter
 RUN adduser -D -G imapfilter imapfilter
 # ensure a homedirectory for the user exists and has correct access rights
 RUN mkdir -p /home/imapfilter  
-RUN chown imapfilter.imapfilter /home/imapfilter
+RUN chown imapfilter /home/imapfilter
+RUN chgrp imapfilter /home/imapfilter
 
 # run everything as the imapfilter user
 USER imapfilter
