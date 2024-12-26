@@ -29,6 +29,8 @@ RUN chmod +x /entryPoint.sh
 # add a user for running imapfilter in the container
 RUN addgroup imapfilter 
 RUN adduser -D -G imapfilter imapfilter
+
+RUN cat /etc/passwd
 # ensure a homedirectory for the user exists and has correct access rights
 RUN mkdir -p /home/imapfilter  
 RUN chown imapfilter.imapfilter /home/imapfilter
